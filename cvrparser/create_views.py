@@ -23,12 +23,26 @@ class CreateView(Executable, ClauseElement):
         self.select = select_stmt
 
 
-@compiles(CreateView, 'mysql')
-def visit_create_view(element, compiler):
-    return "CREATE VIEW %s AS %s" % (
-         element.name,
-         compiler.process(element.select, literal_binds=True)
-         )
+# @compiles(CreateView, 'postgresql')
+# def visit_create_view(element, compiler):
+
+#     # print("-----SELECT: " + element.select)
+
+#     # clause = "CREATE VIEW %s AS %s" % (
+#     #      element.name,
+#     #      compiler.process(element.select, literal_binds=False)
+#     #      )
+
+#     statement = "CREATE VIEW %s AS %s" % (
+#          element.name,
+#          compiler.process(element.select, literal_binds=True)
+#          )
+#     print("------------")
+#     print(statement)
+#     print("------------")
+
+#     engine.execute(statement)
+#     return statement
 
 
 def create_view(name, select_stmt, db):
@@ -42,8 +56,15 @@ def create_view(name, select_stmt, db):
     if name in db.tables_dict.keys():
         print('{0} exists'.format(name))
         return
-    print('Create View', name, select_stmt)
-    engine.execute(CreateView(name, select_stmt))
+    
+    print('Create View', name)
+
+    statement = "CREATE VIEW %s AS %s" % (
+         name,
+         select_stmt.compile(compile_kwargs={"literal_binds": True})
+         )
+
+    engine.execute(statement)
 
 class DropView(DDLElement):
     def __init__(self, name):
@@ -111,7 +132,7 @@ def create_branche_view(db):
                                  upd.sidstopdateret]).\
         where(branche.brancheid == upd.kode).\
         where(upd.enhedsnummer == vs.enhedsnummer).\
-        where(upd.felttype == 'hovedbranche')
+        where(upd.felttype == "hovedbranche")
     create_view(view_name, virk_branche_query, db)
 
 

@@ -34,11 +34,11 @@ class Commands:
         
     
     @staticmethod
-    def update(use_address, resume, num_workers):
+    def update(use_address, resume, num_workers, sidst_indlaest_date):
         interactive_ensure_config_exists()
         setup_database_connection()
         cvr = CvrConnection(update_address=use_address)
-        cvr.update_all(resume, num_workers)
+        cvr.update_all(resume, num_workers, sidst_indlaest_date)
 
     @staticmethod
     def query(enh, cvr, pid, **general_options):
@@ -101,6 +101,12 @@ parser_update.add_argument('-n', '--num_workers',
                            type=int
                            )
 
+parser_update.add_argument('-s', '--sidst_indlaest_date',
+                           dest='sidst_indlaest_date',
+                           help='Specify min sidstIndlaest date for CVR records in YYYY-MM-DD',
+                           default=None,
+                           type=str
+                           )
 
 parser_dawa = subparsers.add_parser('dawa',
                                     help='Download dawa address info and insert into sql database')

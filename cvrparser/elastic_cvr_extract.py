@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch
 # import elasticsearch_dsl
-from elasticsearch_dsl import Search
+from elasticsearch_dsl import Search, Q
 from collections import namedtuple
 import datetime
 import ujson as json
@@ -19,14 +19,15 @@ from multiprocessing.pool import Pool
 import multiprocessing
 import time
 import sys
+from datetime import datetime as dt
 
 
-def update_all_mp(workers=1):
+def update_all_mp(workers=1, sidst_indlaest_date=None):
     # https://docs.python.org/3/howto/logging-cookbook.html
     lock = multiprocessing.Lock()
     queue_size = 30000
     queue = multiprocessing.Queue(maxsize=queue_size)  # maxsize=1000*1000*20)
-    prod = multiprocessing.Process(target=cvr_update_producer, args=(queue, lock))
+    prod = multiprocessing.Process(target=cvr_update_producer, args=(queue, lock, sidst_indlaest_date))
     # prod.daemon = True
     prod.start()
     consumers = [multiprocessing.Process(target=cvr_update_consumer, args=(queue, lock))
@@ -73,7 +74,7 @@ class CvrConnection(object):
     cvr_sentinel = 'CVR_SENTINEL'
     cvr_nothing = 'NOTHING_RETURNED'
 
-    def __init__(self, update_address=False):
+    def __init__(self, update_address=False, sidst_indlaest_date='1900-01-01'):
         """ Setup everything needed for elasticsearch
         connection to Danish Business Authority for CVR data extraction
         consider moving elastic search connection into __init__
@@ -81,6 +82,7 @@ class CvrConnection(object):
         Args:
         -----
           :param update_address: bool,
+          :param sidst_indlaest_date: str (YYYY-MM-DD)
         determine if parse and insert address as well (slows it down)
         """
         self.url = 'http://distribution.virk.dk:80'
@@ -107,6 +109,10 @@ class CvrConnection(object):
                                             month=1,
                                             day=1,
                                             tzinfo=pytz.utc)
+
+        self.sidst_indlaest_date = dt.strptime(sidst_indlaest_date, '%Y-%m-%d')
+        
+
         # self.data_file = os.path.join(self.datapath, 'cvr_all.json')
 
     def search_field_val(self, field, value, size=10):
@@ -157,7 +163,7 @@ class CvrConnection(object):
         return hits
 
     @staticmethod
-    def update_all(self, worker_count=3):
+    def update_all(self, worker_count=3, sidst_indlaest_date=None):
         """
         Update CVR Company Data
         download updates
@@ -165,7 +171,10 @@ class CvrConnection(object):
 
         rewrite to producer consumer.
         """
-        update_all_mp(worker_count)
+
+        sidst_indlaest_date = dt.strptime(sidst_indlaest_date, '%Y-%m-%d')
+
+        update_all_mp(worker_count, sidst_indlaest_date)
         return
         # assert False, 'DEPRECATED'
         # session = create_session()
@@ -651,7 +660,7 @@ def retry_generator(g):
                 raise
 
 
-def cvr_update_producer(queue, lock):
+def cvr_update_producer(queue, lock, sidst_indlaest_date=None):
     """ Producer function that places data to be inserted on the Queue
 
     :param queue: multiprocessing.Queue
@@ -688,8 +697,29 @@ def cvr_update_producer(queue, lock):
         enh_samtid_map = CvrConnection.make_samtid_dict()
         dummy = CvrConnection.update_info(samtid=-1, sidstopdateret=CvrConnection.dummy_date)
         params = {'scroll': cvr.elastic_search_scroll_time, 'size': cvr.elastic_search_scan_size}
-        search = Search(using=cvr.elastic_client, index=cvr.index).query('match_all').params(**params)
+        # search = Search(using=cvr.elastic_client, index=cvr.index).query('match_all').params(**params)
+
+        search = Search(using=cvr.elastic_client, index=cvr.index)
+        
+        # if no minimum date is given, match all records 
+        if sidst_indlaest_date is None:
+            search = search.query('match_all').params(**params)
+        # else, filter by minimum sidstIndlaest date for all three element types
+        else:
+            start_date = sidst_indlaest_date
+            print("GETTING RECORDS WITH MIN sidstIndlaest STARTING AT {}".format(start_date))
+            
+
+            # OR filter for all three element types 
+            filter1 = Q('range', **{"Vrvirksomhed.sidstIndlaest": {'gte': start_date}})
+            filter2 = Q('range', **{"Vrdeltagerperson.sidstIndlaest": {'gte': start_date}})
+            filter3 = Q('range', **{"VrproduktionsEnhed.sidstIndlaest": {'gte': start_date}})
+
+            # search = search.query('match_all').params(**params)
+            search = search.query('bool', should=[filter1, filter2, filter3]).params(**params)
         # search = Search(using=cvr.elastic_client, index=cvr.index).query(elasticsearch_dsl.query.MatchAll()).params(**params)
+
+        print("ELASTIC QUERYY: {}".format(search.to_dict()))
 
         generator = search.scan()
         full_update = False
@@ -705,6 +735,7 @@ def cvr_update_producer(queue, lock):
                     logger.debug('BAD DICT DOWNLOADED CVR UPDATE PRODUCER \n{0} {1}'.format(dat, dict_type_set))                    
                     continue
                 dict_type = dict_type_set.pop()
+                # print(dict_type)
                 dat = dat[dict_type]
                 enhedsnummer = dat['enhedsNummer']
                 samtid = dat['samtId']

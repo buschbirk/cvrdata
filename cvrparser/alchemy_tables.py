@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import (BigInteger, Column, DateTime,
                         Enum, Float, Index, Integer,
-                        SmallInteger, String, text, Text)
+                        SmallInteger, String, text, Text, Boolean)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.automap import automap_base
 from collections import namedtuple
@@ -27,168 +27,168 @@ class DBModel(object):
 
 
 class Aarsbeskaeftigelse(Base):
-    __tablename__ = 'Aarsbeskaeftigelse'
+    __tablename__ = 'aarsbeskaeftigelse'
 
     enhedsnummer = Column(BigInteger, primary_key=True, nullable=False)
     aar = Column(Integer, primary_key=True, nullable=False)
     aarsvaerk = Column(Integer)
     ansatte = Column(Integer)
     ansatteinklusivejere = Column(Integer)
-    aarsvaerkinterval = Column(String(40, 'utf8mb4_bin'))
-    ansatteinterval = Column(String(40, 'utf8mb4_bin'))
-    ansatteinklusivejereinterval = Column(String(40, 'utf8mb4_bin'))
+    aarsvaerkinterval = Column(String(40))
+    ansatteinterval = Column(String(40))
+    ansatteinklusivejereinterval = Column(String(40))
     sidstopdateret = Column(DateTime, nullable=True)
 
 
 class Kvartalsbeskaeftigelse(Base):
-    __tablename__ = 'Kvartalsbeskaeftigelse'
+    __tablename__ = 'kvartalsbeskaeftigelse'
     enhedsnummer = Column(BigInteger, primary_key=True, nullable=False)
     aar = Column(Integer, primary_key=True, nullable=False)
     kvartal = Column(Integer, primary_key=True, nullable=False)
     aarsvaerk = Column(Integer)
     ansatte = Column(Integer)
-    aarsvaerkinterval = Column(String(40, 'utf8mb4_bin'))
-    ansatteinterval = Column(String(40, 'utf8mb4_bin'))
+    aarsvaerkinterval = Column(String(40))
+    ansatteinterval = Column(String(40))
     sidstopdateret = Column(DateTime, nullable=True)
 
     
 class Maanedsbeskaeftigelse(Base):
-    __tablename__ = 'Maanedsbeskaeftigelse'
+    __tablename__ = 'maanedsbeskaeftigelse'
     enhedsnummer = Column(BigInteger, primary_key=True, nullable=False)
     aar = Column(Integer, primary_key=True, nullable=False)
     maaned = Column(Integer, primary_key=True, nullable=False)
     aarsvaerk = Column(Integer)
     ansatte = Column(Integer)
-    aarsvaerkinterval = Column(String(40, 'utf8mb4_bin'))
-    ansatteinterval = Column(String(40, 'utf8mb4_bin'))
+    aarsvaerkinterval = Column(String(40))
+    ansatteinterval = Column(String(40))
     sidstopdateret = Column(DateTime, nullable=True)
 
 class erstAarsbeskaeftigelse(Base):
-    __tablename__ = 'erstAarsbeskaeftigelse'
+    __tablename__ = 'erstaarsbeskaeftigelse'
 
     enhedsnummer = Column(BigInteger, primary_key=True, nullable=False)
     aar = Column(Integer, primary_key=True, nullable=False)
     aarsvaerk = Column(Integer)
     ansatte = Column(Integer)
     ansatteinklusivejere = Column(Integer)
-    aarsvaerkinterval = Column(String(40, 'utf8mb4_bin'))
-    ansatteinterval = Column(String(40, 'utf8mb4_bin'))
-    ansatteinklusivejereinterval = Column(String(40, 'utf8mb4_bin'))
+    aarsvaerkinterval = Column(String(40))
+    ansatteinterval = Column(String(40))
+    ansatteinklusivejereinterval = Column(String(40))
     sidstopdateret = Column(DateTime, nullable=True)
 
 
 class erstKvartalsbeskaeftigelse(Base):
-    __tablename__ = 'erstKvartalsbeskaeftigelse'
+    __tablename__ = 'erstkvartalsbeskaeftigelse'
     enhedsnummer = Column(BigInteger, primary_key=True, nullable=False)
     aar = Column(Integer, primary_key=True, nullable=False)
     kvartal = Column(Integer, primary_key=True, nullable=False)
     aarsvaerk = Column(Integer)
     ansatte = Column(Integer)
-    aarsvaerkinterval = Column(String(40, 'utf8mb4_bin'))
-    ansatteinterval = Column(String(40, 'utf8mb4_bin'))
+    aarsvaerkinterval = Column(String(40))
+    ansatteinterval = Column(String(40))
     sidstopdateret = Column(DateTime, nullable=True)
 
     
 class erstMaanedsbeskaeftigelse(Base):
-    __tablename__ = 'erstMaanedsbeskaeftigelse'
+    __tablename__ = 'erstmaanedsbeskaeftigelse'
     enhedsnummer = Column(BigInteger, primary_key=True, nullable=False)
     aar = Column(Integer, primary_key=True, nullable=False)
     maaned = Column(Integer, primary_key=True, nullable=False)
     aarsvaerk = Column(Integer)
     ansatte = Column(Integer)
-    aarsvaerkinterval = Column(String(40, 'utf8mb4_bin'))
-    ansatteinterval = Column(String(40, 'utf8mb4_bin'))
+    aarsvaerkinterval = Column(String(40))
+    ansatteinterval = Column(String(40))
     sidstopdateret = Column(DateTime, nullable=True)
 
 
 
 class AdresseDawa(Base):
-    __tablename__ = 'AdresseDawa'
+    __tablename__ = 'adressedawa'
 
     # adresseid = Column(Integer, primary_key=True)
-    id = Column(String(40, 'utf8mb4_bin'), nullable=False, primary_key=True)
+    id = Column(String(40), nullable=False, primary_key=True)
     status = Column(Integer)
     oprettet = Column(DateTime)
     ændret = Column(DateTime)
     vejkode = Column(SmallInteger)
-    vejnavn = Column(String(50, 'utf8mb4_bin'))
-    adresseringsvejnavn = Column(String(50, 'utf8mb4_bin'))
-    husnr = Column(String(5, 'utf8mb4_bin'))
-    etage = Column(String(2, 'utf8mb4_bin'))
-    dør = Column(String(6, 'utf8mb4_bin'))
-    supplerendebynavn = Column(String(50, 'utf8mb4_bin'))
+    vejnavn = Column(String(50))
+    adresseringsvejnavn = Column(String(50))
+    husnr = Column(String(5))
+    etage = Column(String(2))
+    dør = Column(String(6))
+    supplerendebynavn = Column(String(50))
     postnr = Column(SmallInteger)
-    postnrnavn = Column(String(50, 'utf8mb4_bin'))
+    postnrnavn = Column(String(50))
     stormodtagerpostnr = Column(SmallInteger)
-    stormodtagerpostnrnavn = Column(String(50, 'utf8mb4_bin'))
+    stormodtagerpostnrnavn = Column(String(50))
     kommunekode = Column(SmallInteger)
-    kommunenavn = Column(String(50, 'utf8mb4_bin'))
+    kommunenavn = Column(String(50))
     ejerlavkode = Column(Integer)
-    ejerlavnavn = Column(String(50, 'utf8mb4_bin'))
-    matrikelnr = Column(String(10, 'utf8mb4_bin'))
+    ejerlavnavn = Column(String(50))
+    matrikelnr = Column(String(10))
     esrejendomsnr = Column(Integer)
     etrs89koordinat_øst = Column(Float)
     etrs89koordinat_nord = Column(Float)
     wgs84koordinat_bredde = Column(Float)
     wgs84koordinat_længde = Column(Float)
-    nøjagtighed = Column(String(2, 'utf8mb4_bin'))
+    nøjagtighed = Column(String(2))
     kilde = Column(Integer)
-    tekniskstandard = Column(String(2, 'utf8mb4_bin'))
+    tekniskstandard = Column(String(2))
     tekstretning = Column(Float)
-    ddkn_m100 = Column(String(20, 'utf8mb4_bin'))
-    ddkn_km1 = Column(String(20, 'utf8mb4_bin'))
-    ddkn_km10 = Column(String(20, 'utf8mb4_bin'))
+    ddkn_m100 = Column(String(20))
+    ddkn_km1 = Column(String(20))
+    ddkn_km10 = Column(String(20))
     adressepunktændringsdato = Column(DateTime)
-    adgangsadresseid = Column(String(40, 'utf8mb4_bin'))
-    adgangsadresse_status = Column(String(1, 'utf8mb4_bin'))
+    adgangsadresseid = Column(String(40))
+    adgangsadresse_status = Column(String(1))
     adgangsadresse_oprettet = Column(DateTime)
     adgangsadresse_ændret = Column(DateTime)
     regionskode = Column(SmallInteger)
-    regionsnavn = Column(String(50, 'utf8mb4_bin'))
-    jordstykke_ejerlavnavn = Column(String(100, 'utf8mb4_bin'))
-    kvhx = Column(String(20, 'utf8mb4_bin'))
+    regionsnavn = Column(String(50))
+    jordstykke_ejerlavnavn = Column(String(100))
+    kvhx = Column(String(20))
     sognekode = Column(SmallInteger)
-    sognenavn = Column(String(50, 'utf8mb4_bin'))
+    sognenavn = Column(String(50))
     politikredskode = Column(SmallInteger)
-    politikredsnavn = Column(String(100, 'utf8mb4_bin'))
+    politikredsnavn = Column(String(100))
     retskredskode = Column(SmallInteger)
-    retskredsnavn = Column(String(100, 'utf8mb4_bin'))
+    retskredsnavn = Column(String(100))
     opstillingskredskode = Column(SmallInteger)
-    opstillingskredsnavn = Column(String(100, 'utf8mb4_bin'))
-    zone = Column(String(40, 'utf8mb4_bin'))
+    opstillingskredsnavn = Column(String(100))
+    zone = Column(String(40))
     jordstykke_ejerlavkode = Column(Integer)
-    jordstykke_matrikelnr = Column(String(10, 'utf8mb4_bin'))
+    jordstykke_matrikelnr = Column(String(10))
     jordstykke_esrejendomsnr = Column(Integer)
-    kvh = Column(String(20, 'utf8mb4_bin'))
+    kvh = Column(String(20))
     højde = Column(Float)
-    adgangspunktid = Column(String(40, 'utf8mb4_bin'))
+    adgangspunktid = Column(String(40))
 
 
 class Adresseupdate(Base):
-    __tablename__ = 'Adresseupdates'
+    __tablename__ = 'adresseupdates'
 
     updateid = Column(BigInteger, primary_key=True)
     enhedsnummer = Column(BigInteger, nullable=False)
-    adressetype = Column(Enum('beliggenhedsadresse', 'postadresse'))
-    adressematch = Column(String(128, 'utf8mb4_bin'), nullable=False)
+    adressetype = Column(String(40))
+    adressematch = Column(String(128), nullable=False)
     # kode = Column(BigInteger, nullable=False)
-    dawaid = Column(String(40, 'utf8mb4_bin'), nullable=True)
+    dawaid = Column(String(40), nullable=True)
     gyldigfra = Column(DateTime, nullable=False,
                        server_default=default_start_date)
     gyldigtil = Column(DateTime, nullable=False,
                        server_default=default_end_date)
-    post_string = Column(String(512, 'utf8mb4_bin'))
+    post_string = Column(String(512))
     sidstopdateret = Column(DateTime, nullable=True)
 
 
 class Attributter(Base):
-    __tablename__ = 'Attributter'
+    __tablename__ = 'attributter'
     updateid = Column(Integer, primary_key=True)
     enhedsnummer = Column(BigInteger)
     sekvensnr = Column(Integer)
-    vaerdinavn = Column(String(128, 'utf8mb4_bin'))
-    vaerditype = Column(String(32, 'utf8mb4_bin'))
-    vaerdi = Column(Text(2**32-1, collation='utf8mb4_bin'))
+    vaerdinavn = Column(String(128))
+    vaerditype = Column(String(32))
+    vaerdi = Column(Text())
     gyldigfra = Column(DateTime, nullable=False, server_default=default_start_date)
     gyldigtil = Column(DateTime, nullable=False, server_default=default_end_date)
     sidstopdateret = Column(DateTime, nullable=True)
@@ -197,10 +197,10 @@ class Attributter(Base):
 # class Branche(Base):
 #     __tablename__ = 'Branche'
 #     branchekode = Column(Integer, primary_key=True)
-#     branchetekst = Column(String(255, 'utf8mb4_bin'))
+#     branchetekst = Column(String(255))
 
 class Branche(Base):
-    __tablename__ = 'Branche'
+    __tablename__ = 'branche'
     __table_args__ = (
         Index('branche_index',
               'branchekode',
@@ -209,39 +209,39 @@ class Branche(Base):
     )
     brancheid = Column(Integer, primary_key=True)
     branchekode = Column(Integer, nullable=False)
-    branchetekst = Column(String(160, 'utf8mb4_bin'))
+    branchetekst = Column(String(160))
 
 
 class Enhedsrelation(Base):
-    __tablename__ = 'Enhedsrelation'
+    __tablename__ = 'enhedsrelation'
     updateid = Column(BigInteger, primary_key=True)
     enhedsnummer_deltager = Column(BigInteger, nullable=False)
     enhedsnummer_virksomhed = Column(BigInteger, nullable=False)
     enhedsnummer_organisation = Column(BigInteger, nullable=False)
     sekvensnr = Column(Integer, nullable=False)
-    vaerdinavn = Column(String(256, 'utf8mb4_bin'), nullable=False)
-    vaerdi = Column(String(2**11, 'utf8mb4_bin'))
+    vaerdinavn = Column(String(256), nullable=False)
+    vaerdi = Column(String(2**11))
     gyldigfra = Column(DateTime, nullable=False, server_default=default_start_date)
     gyldigtil = Column(DateTime, nullable=False, server_default=default_end_date)
     sidstopdateret = Column(DateTime, nullable=True)
 
 
 class Kontaktinfo(Base):
-    __tablename__ = 'Kontaktinfo'
+    __tablename__ = 'kontaktinfo'
     oplysningid = Column(Integer, primary_key=True)
-    kontaktoplysning = Column(String(768, 'utf8mb4_bin'), nullable=False, unique=True)
+    kontaktoplysning = Column(String(768), nullable=False, unique=True)
 
 
 
 
 class Lastupdated(Base):
-    __tablename__ = "LastUpdated"
-    updatetype = Column(String(255, 'utf8mb4_bin'), primary_key=True)
+    __tablename__ = "lastupdated"
+    updatetype = Column(String(255), primary_key=True)
     lastupdated = Column(DateTime, nullable=False)
 
 
 class Livsforloeb(Base):
-    __tablename__ = 'Livsforloeb'
+    __tablename__ = 'livsforloeb'
     __table_args__ = (
         Index('livsforleb_enheds_index',
               'enhedsnummer',
@@ -259,17 +259,17 @@ class Livsforloeb(Base):
 
 
 class Navne(Base):
-    __tablename__ = 'Navne'
+    __tablename__ = 'navne'
     navnid = Column(Integer, primary_key=True)
-    navn = Column(String(1024, 'utf8_bin'), nullable=False, unique=True)
+    navn = Column(String(1024), nullable=False, unique=True)
 
 
 class Organisation(Base):
-    __tablename__ = 'Organisation'
+    __tablename__ = 'organisation'
     updateid = Column(BigInteger, primary_key=True)
     enhedsnummer = Column(BigInteger, nullable=False)
-    hovedtype = Column(String(256, 'utf8mb4_bin'), nullable=False)
-    navn = Column(String(256, 'utf8mb4_bin'), nullable=False)
+    hovedtype = Column(String(256), nullable=False)
+    navn = Column(String(256), nullable=False)
     gyldigfra = Column(DateTime, nullable=False,
                        server_default=default_start_date)
     gyldigtil = Column(DateTime, nullable=False,
@@ -278,54 +278,54 @@ class Organisation(Base):
 
 
 class Person(Base):
-    __tablename__ = 'Person'
+    __tablename__ = 'person'
     enhedsnummer = Column(BigInteger, primary_key=True)
     forretningsnoegle = Column(BigInteger)
-    statuskode = Column(String(10, 'utf8mb4_bin'))
-    stilling = Column(String(255, 'utf8mb4_bin'))
+    statuskode = Column(String(10))
+    stilling = Column(String(255))
     dataadgang = Column(Integer)
-    enhedstype = Column(String(255, 'utf8mb4_bin'))
-    fejlbeskrivelse = Column(String(255, 'utf8mb4_bin'))
-    fejlregistreret = Column(Integer)
-    fejlvedindlaesning = Column(Integer)
+    enhedstype = Column(String(255))
+    fejlbeskrivelse = Column(String(255))
+    fejlregistreret = Column(Boolean)
+    fejlvedindlaesning = Column(Boolean)
     naermestefremtidigedato = Column(DateTime)
-    reklamebeskyttet = Column(Integer)
+    reklamebeskyttet = Column(Boolean)
     samtid = Column(Integer)
     sidstindlaest = Column(DateTime)
     sidstopdateret = Column(DateTime)
 
 
 class Produktion(Base):
-    __tablename__ = 'Produktion'
+    __tablename__ = 'produktion'
     enhedsnummer = Column(BigInteger, primary_key=True)
     pnummer = Column(BigInteger, index=True)
-    enhedstype = Column(String(256, 'utf8mb4_bin'))
+    enhedstype = Column(String(256))
     dataadgang = Column(Integer)
     brancheansvarskode = Column(Integer)
-    fejlbeskrivelse = Column(String(255, 'utf8mb4_bin'))
-    fejlregistreret = Column(Integer)
-    fejlvedindlaesning = Column(Integer)
+    fejlbeskrivelse = Column(String(255))
+    fejlregistreret = Column(Boolean)
+    fejlvedindlaesning = Column(Boolean)
     naermestefremtidigedato = Column(DateTime)
-    reklamebeskyttet = Column(Integer)
+    reklamebeskyttet = Column(Boolean)
     samtid = Column(Integer)
     sidstindlaest = Column(DateTime)
     sidstopdateret = Column(DateTime)
-    virkningsaktoer = Column(String(64, 'utf8mb4_bin'))
+    virkningsaktoer = Column(String(64))
 
 
 class Regnummer(Base):
-    __tablename__ = 'Regnummer'
+    __tablename__ = 'regnummer'
     regid = Column(Integer, primary_key=True)
-    regnummer = Column(String(20, 'utf8mb4_bin'), nullable=False, unique=True)
+    regnummer = Column(String(20), nullable=False, unique=True)
 
 
 class SpaltningFusion(Base):
-    __tablename__ = 'SpaltningFusion'
+    __tablename__ = 'spaltningfusion'
     updateid = Column(BigInteger, primary_key=True)
     enhedsnummer = Column(BigInteger, nullable=False)
     enhedsnummer_organisation = Column(BigInteger, nullable=False)
-    spalt_fusion = Column(Enum('spaltning', 'fusion'))
-    indud = Column(Enum('indgaaende', 'udgaaende'), nullable=False)
+    spalt_fusion = Column(String(40))
+    indud = Column(String(40), nullable=False)
     gyldigfra = Column(DateTime, nullable=False,
                        server_default=default_start_date)
     gyldigtil = Column(DateTime, nullable=False,
@@ -334,7 +334,7 @@ class SpaltningFusion(Base):
 
 
 class Statuskode(Base):
-    __tablename__ = 'Statuskode'
+    __tablename__ = 'statuskode'
     __table_args__ = (
         Index('status_kode_kombi_index',
               'statuskode',
@@ -343,16 +343,16 @@ class Statuskode(Base):
     )
     statusid = Column(Integer, primary_key=True)
     statuskode = Column(Integer, nullable=False)
-    statustekst = Column(Text(2**32-1, collation='utf8mb4_bin'), nullable=True)
+    statustekst = Column(Text(), nullable=True)
     kreditoplysningskode = Column(Integer, nullable=False)
-    kreditoplysningtekst = Column(Text(2**32-1, collation='utf8mb4_bin'), nullable=True)
+    kreditoplysningtekst = Column(Text(), nullable=True)
 
 
 class Update(Base):
-    __tablename__ = 'Updates'
+    __tablename__ = 'updates'
     updateid = Column(BigInteger, primary_key=True)
     enhedsnummer = Column(BigInteger, nullable=False)
-    felttype = Column(String(256, 'utf8mb4_bin'), nullable=False)
+    felttype = Column(String(256), nullable=False)
     kode = Column(BigInteger, nullable=False)
     gyldigfra = Column(DateTime, nullable=False,
                        server_default=default_start_date)
@@ -362,44 +362,44 @@ class Update(Base):
 
 
 class Virksomhed(Base):
-    __tablename__ = 'Virksomhed'
+    __tablename__ = 'virksomhed'
     enhedsnummer = Column(BigInteger, primary_key=True)
     cvrnummer = Column(Integer, nullable=False, unique=True)
-    enhedstype = Column(String(256, 'utf8mb4_bin'))
+    enhedstype = Column(String(256))
     dataadgang = Column(Integer)
     brancheansvarskode = Column(Integer)
-    fejlbeskrivelse = Column(String(255, 'utf8mb4_bin'))
-    fejlregistreret = Column(Integer)
-    fejlvedindlaesning = Column(Integer)
+    fejlbeskrivelse = Column(String(255))
+    fejlregistreret = Column(Boolean)
+    fejlvedindlaesning = Column(Boolean)
     naermestefremtidigedato = Column(DateTime)
-    reklamebeskyttet = Column(Integer)
+    reklamebeskyttet = Column(Boolean)
     samtid = Column(Integer)
     sidstindlaest = Column(DateTime)
     sidstopdateret = Column(DateTime)
-    virkningsaktoer = Column(String(64, 'utf8mb4_bin'))
+    virkningsaktoer = Column(String(64))
 
 
 class Virksomhedsform(Base):
-    __tablename__ = 'Virksomhedsform'
+    __tablename__ = 'virksomhedsform'
     virksomhedsformkode = Column(Integer, primary_key=True)
-    kortbeskrivelse = Column(String(20, 'utf8mb4_bin'))
-    langbeskrivelse = Column(String(255, 'utf8mb4_bin'))
-    ansvarligdataleverandoer = Column(String(255, 'utf8mb4_bin'))
+    kortbeskrivelse = Column(String(20))
+    langbeskrivelse = Column(String(255))
+    ansvarligdataleverandoer = Column(String(255))
 
 
 class Virksomhedsstatus(Base):
-    __tablename__ = 'Virksomhedsstatus'
+    __tablename__ = 'virksomhedsstatus'
     virksomhedsstatusid = Column(Integer, primary_key=True)
-    virksomhedsstatus = Column(String(768, 'utf8mb4_bin'),
+    virksomhedsstatus = Column(String(768),
                                nullable=False, unique=True)
 
 
 class Registration(Base):
-    __tablename__ = 'Registration'
+    __tablename__ = 'registration'
     registrationid = Column(BigInteger, primary_key=True)
-    adresse = Column(String(255, collation='utf8mb4_bin'))
+    adresse = Column(String(255))
     cvrnummer = Column(Integer)
-    hovednavn = Column(String(255, 'utf8mb4_bin'))
+    hovednavn = Column(String(255))
     kommunekode = Column(Integer)
     offentliggoerelseid = Column(Integer, unique=True)
     offentliggoerelsetidsstempel = Column(DateTime)
@@ -408,10 +408,10 @@ class Registration(Base):
     postnummer = Column(Integer)
     registreringtidsstempel = Column(DateTime)
     sidstopdateret = Column(DateTime)
-    tekst  = Column(Text(2**30-1, collation='utf8mb4_bin'))
-    ren_tekst  = Column(Text(2**30-1, collation='utf8mb4_bin'))
+    tekst  = Column(Text())
+    ren_tekst  = Column(Text())
     virksomhedsformkode = Column(Integer)
-    virksomhedsregistreringstatusser =  Column(String(255, collation='utf8mb4_bin'))
+    virksomhedsregistreringstatusser =  Column(String(255))
     
 
 class CreateDatabase(object):

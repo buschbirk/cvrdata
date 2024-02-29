@@ -125,7 +125,7 @@ def setup_database_connection(config_name='Global'):
     for k, v in _config.items():
         config[k] = v
     connection_url = ("{sql_type}://{user}:{passwd}@{host}:{port}/"
-                      "{database}?charset={charset}")
+                      "{database}")
     connection_url = connection_url.format(**_config)
     _engine = create_engine(connection_url, encoding='utf8',
                             echo=False,  pool_size=30, max_overflow=30,

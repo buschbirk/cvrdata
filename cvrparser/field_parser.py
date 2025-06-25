@@ -534,8 +534,30 @@ class AddressParser(Parser):
 
     def __init__(self, dawa_transl):
         table = alchemy_tables.Adresseupdate
-        fields = [table.enhedsnummer, table.adressetype, table.adressematch, table.dawaid, table.gyldigfra,
-                  table.gyldigtil, table.post_string,  table.sidstopdateret]
+        fields = [table.enhedsnummer, table.adressetype, table.adressematch, 
+                  table.post_string,
+                  table.dawaid, 
+                  table.dawaid_from_virk,
+                  table.landekode,
+                  table.fritekst,
+                  table.vejkode,
+                  table.kommunekode,
+                  table.kommunenavn,
+                  table.husnummerfra,
+                  table.husnummertil,
+                  table.bogstavfra,
+                  table.bogstavtil,
+                  table.etage,
+                  table.sidedoer,
+                  table.conavn,
+                  table.postboks,
+                  table.vejnavn,
+                  table.bynavn,
+                  table.postnummer,
+                  table.postdistrikt,
+                  table.gyldigfra,
+                  table.gyldigtil, 
+                  table.sidstopdateret]
         super().__init__(table, fields)
         # add beligstring to this maybe to see in db
         self.json_fields = ['beliggenhedsadresse', 'postadresse']
@@ -549,13 +571,68 @@ class AddressParser(Parser):
                 if 'adresseId' in z and z['adresseId'] is not None:
                     aid = z['adresseId']
                     ad_status = 'adresse'
+                    dawaid_from_virk = True
                 elif self.best_dawa_match is not None:
                     [aid, ad_status] = self.best_dawa_match.adresse_id(z)
+                    dawaid_from_virk = False 
                 else:
                     aid = None
                     ad_status = 'No Id'
+                    dawaid_from_virk = False 
                 bl = beliggenhedsadresse_to_str(z)
-                self.db.insert((enh, field, ad_status, aid, tfrom, tto, bl, utc_sidstopdateret))
+
+                # parse address fields 
+                landekode = z.get('landekode') 
+                fritekst = z.get('fritekst') 
+                vejkode = z.get('vejkode') 
+
+                if z.get('kommune') is not None: 
+                    kommune = z.get('kommune')
+                    kommunekode = kommune.get('kommuneKode')
+                    kommunenavn = kommune.get('kommuneNavn')
+                else: 
+                    kommunekode = None 
+                    kommunenavn = None 
+
+                husnummerfra = z.get('husnummerFra') 
+                husnummertil = z.get('husnummerTil') 
+                bogstavfra = z.get('bogstavFra') 
+                bogstavtil = z.get('bogstavTil') 
+                etage = z.get('etage') 
+                sidedoer = z.get('sidedoer') 
+                conavn = z.get('conavn') 
+                postboks = z.get('postboks') 
+                vejnavn = z.get('vejnavn') 
+                bynavn = z.get('bynavn') 
+                postnummer = z.get('postnummer') 
+                postdistrikt = z.get('postdistrikt') 
+
+                self.db.insert((enh, 
+                                field, 
+                                ad_status, 
+                                bl, 
+                                aid, 
+                                dawaid_from_virk,
+                                landekode,
+                                fritekst,
+                                vejkode,
+                                kommunekode,
+                                kommunenavn,
+                                husnummerfra,
+                                husnummertil,
+                                bogstavfra,
+                                bogstavtil,
+                                etage,
+                                sidedoer,
+                                conavn,
+                                postboks,
+                                vejnavn,
+                                bynavn,
+                                postnummer,
+                                postdistrikt,
+                                tfrom, 
+                                tto, 
+                                utc_sidstopdateret))
 
 
 class ParserFactory(object):

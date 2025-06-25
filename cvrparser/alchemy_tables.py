@@ -171,14 +171,41 @@ class Adresseupdate(Base):
     enhedsnummer = Column(BigInteger, nullable=False)
     adressetype = Column(String(40))
     adressematch = Column(String(128), nullable=False)
-    # kode = Column(BigInteger, nullable=False)
+    post_string = Column(String(512))
     dawaid = Column(String(40), nullable=True)
+    dawaid_from_virk = Column(Boolean, nullable=True)
+
+    landekode = Column(String(40), nullable=True)
+    fritekst = Column(String(512), nullable=True)
+    vejkode = Column(BigInteger, nullable=True)
+
+    kommunekode = Column(BigInteger, nullable=True)
+    kommunenavn = Column(String(512), nullable=True)
+
+    husnummerfra = Column(BigInteger, nullable=True)
+    husnummertil = Column(BigInteger, nullable=True)
+    bogstavfra = Column(String(40), nullable=True)
+    bogstavtil = Column(String(40), nullable=True)
+    etage = Column(String(40), nullable=True)
+    sidedoer = Column(String(40), nullable=True)
+    conavn = Column(String(512), nullable=True)
+    postboks = Column(String(512), nullable=True)
+    vejnavn = Column(String(512), nullable=True)
+    bynavn = Column(String(512), nullable=True)
+    postnummer = Column(BigInteger, nullable=True)
+    postdistrikt = Column(String(512), nullable=True)
+
     gyldigfra = Column(DateTime, nullable=False,
                        server_default=default_start_date)
     gyldigtil = Column(DateTime, nullable=False,
                        server_default=default_end_date)
-    post_string = Column(String(512))
+    
     sidstopdateret = Column(DateTime, nullable=True)
+
+
+
+
+
 
 
 class Attributter(Base):

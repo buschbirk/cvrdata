@@ -11,7 +11,7 @@ from . import cvr_makedb
 class Commands:
 
     @staticmethod
-    def dbsetup(create_tables, create_query_indexes, create_views, drop_views):
+    def dbsetup(create_tables, create_query_indexes, create_views, rebuild_tables, drop_views):
         interactive_ensure_config_exists()
         setup_database_connection()
         crdb = cvr_makedb.MakeCvrDatabase()
@@ -21,6 +21,8 @@ class Commands:
             crdb.create_views()
         if create_query_indexes:
             crdb.create_query_indexes()
+        if rebuild_tables:
+            crdb.rebuild_tables() 
         if not (create_query_indexes or create_views or create_tables):
             print('No command option given.')
             print('-t create_tables\n-v create views\n-i create indicesx')
@@ -145,6 +147,12 @@ parser_setup.add_argument('-i', '--indexes',
                           default=False,
                           action='store_true'
                           )
+parser_setup.add_argument('-r', '--rebuild',
+                          dest='rebuild_tables',
+                          help='drops existing tables and rebuilds them',
+                          default=False,
+                          action='store_true'
+                          )
 parser_setup.add_argument('-dv_force', '--drop_views',
                           dest='drop_views',
                           help='Drop Views',
@@ -157,7 +165,6 @@ parser_setup.add_argument('-dt_force', '--drop_tables',
                           default=False,
                           action='store_true'
                           )
-
 
 
 if __name__ == "__main__":

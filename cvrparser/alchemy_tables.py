@@ -447,6 +447,18 @@ class CreateDatabase(object):
     def delete_tables(self):
         pass    
 
+    def rebuild_tables(self):
+        # base.metadata.create_all(proxy_engine, tables=[x.__table__ for x in tables])
+        print('Rebuild Tables')
+        for x in self.cvr_tables:
+            try:
+                print('Creating Table {0}'.format(x.__tablename__))
+                x.__table__.create(proxy_engine)
+            except Exception as e:
+                print("Dropping table {} and recreating".format(x))
+                x.__table__.drop(proxy_engine, cascade=True)
+                x.__table__.create(proxy_engine)
+
     def create_tables(self):
         # base.metadata.create_all(proxy_engine, tables=[x.__table__ for x in tables])
         print('Create Tables')

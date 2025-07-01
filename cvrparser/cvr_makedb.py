@@ -26,6 +26,9 @@ class MakeCvrDatabase(object):
         print('Creating Query Indexes')
         self.alchemy_model.create_query_indexes()
 
+    def rebuild_tables(self):
+        self.alchemy_model.rebuild_tables() 
+
     @staticmethod
     def create_views():
         print('--- Creating Views --- only with mysql i think')
@@ -34,6 +37,8 @@ class MakeCvrDatabase(object):
     @staticmethod
     def drop_views_and_tables():
         print('not doing much')
+
+        # print('not doing much')
 
     @staticmethod
     def download_dawa():

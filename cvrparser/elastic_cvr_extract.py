@@ -85,8 +85,8 @@ class CvrConnection(object):
           :param sidst_indlaest_date: str (YYYY-MM-DD)
         determine if parse and insert address as well (slows it down)
         """
-        self.url = 'http://distribution.virk.dk:80'
-        self.index = 'cvr-permanent'
+        self.url = 'https://distribution.virk.dk:8443'
+        self.index = 'cvr-re'
         self.company_type = 'virksomhed'
         self.penhed_type = 'produktionsenhed'
         self.person_type = 'deltager'

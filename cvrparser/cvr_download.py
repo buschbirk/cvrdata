@@ -34,8 +34,8 @@ if __name__ == '__main__':
     # command line arguments run with python cvr_download.py -u <username> -p <password>
     logging.basicConfig(level=logging.INFO)
 
-    url = 'http://distribution.virk.dk:80'
-    index = 'cvr-permanent'
+    url = 'https://distribution.virk.dk:8443'
+    index = 'cvr-re'
     # Make Elastic Client - arg names should be understandable - you can just hardcode them
     elastic_client = Elasticsearch(url, http_auth=(args.cvruser, args.cvrpass),
                                    timeout=60, max_retries=10, retry_on_timeout=True)

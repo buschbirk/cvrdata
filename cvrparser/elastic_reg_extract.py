@@ -75,7 +75,7 @@ class RegistrationConnection(object):
 
         """
         #http://distribution.virk.dk/registreringstekster/registreringstekst/_search
-        self.url = 'http://distribution.virk.dk:80'
+        self.url = 'https://distribution.virk.dk:8443'
         self.index = 'registreringstekster'
         self.user = config['cvr_user']
         self.password = config['cvr_passwd']
